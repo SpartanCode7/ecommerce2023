@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const { BAD_REQUEST, OK, INTERNAL_SERVER_ERROR } = require("../constant/httpCode");
 
 // Get all products
 const getAllProducts = async (req, res) => {
@@ -6,7 +7,7 @@ const getAllProducts = async (req, res) => {
     const products = await Product.find();
     res.json(products);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving products" });
+    res.status(INTERNAL_SERVER_ERROR).json({ message: "Error retrieving products" });
   }
 };
 
@@ -15,24 +16,33 @@ const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(INTERNAL_SERVER_ERROR).json({ message: "Product not found" });
     }
     res.json(product);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving product" });
+    res.status(INTERNAL_SERVER_ERROR).json({ message: "Error retrieving product" });
   }
 };
 
 // Create a new product
 const createProduct = async (req, res) => {
+  // Check if all required fields are present in the request body
+  const requiredFields = ["name", "sku", "description", "price", "image", "stock"];
+  const missingFields = requiredFields.filter((field) => !req.body[field]);
+
+  if (missingFields.length > 0) {
+    return res.status(BAD_REQUEST).json({ message: `Please fill in the following required fields: ${missingFields.join(", ")}` });
+  }
+
   try {
     const product = new Product(req.body);
     await product.save();
-    res.status(201).json(product);
+    res.status(OK).json(product);
   } catch (error) {
-    res.status(500).json({ message: "Error creating product" });
+    res.status(INTERNAL_SERVER_ERROR).json({ message: "Error creating product" });
   }
 };
+
 
 // Update an existing product
 const updateProduct = async (req, res) => {
@@ -43,11 +53,11 @@ const updateProduct = async (req, res) => {
       { new: true }
     );
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(BAD_REQUEST).json({ message: "Product not found" });
     }
     res.json(product);
   } catch (error) {
-    res.status(500).json({ message: "Error updating product" });
+    res.status(INTERNAL_SERVER_ERROR).json({ message: "Error updating product" });
   }
 };
 
@@ -56,11 +66,11 @@ const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(BAD_REQUEST).json({ message: "Product not found" });
     }
     res.json({ message: "Product deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting product" });
+    res.status(INTERNAL_SERVER_ERROR).json({ message: "Error deleting product" });
   }
 };
 
