@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("./config/db_connection")
-// const adminRoutes = require("../src/routes/adminRoutes");
+const adminRoutes = require("../src/routes/adminRoutes");
 // const userRoutes = require("./routes/userRoutes");
 // const categoryRoutes = require("./routes/categoryRoutes");
 const productRoutes = require("./routes/productRoutes");
@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Routes
-// app.use("/admin", adminRoutes);
+app.use("/admin", adminRoutes);
 // app.use("/user", userRoutes);
 // app.use("/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);

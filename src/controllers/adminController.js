@@ -1,16 +1,16 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../models/Admin");
 
 // Admin login controllerw
 const adminLogin = async (req, res) => {
-  // Retrieve username and password from request body
-  const { username, password } = req.body;
+  // Retrieve email and password from request body
+  const { email, password } = req.body;
 
-  // Check if username and password match
-  const user = await User.findOne({ username });
+  // Check if email and password match
+  const user = await User.findOne({ email });
   if (!user || !bcrypt.compareSync(password, user.password)) {
-    return res.status(401).json({ message: "Invalid username or password" });
+    return res.status(401).json({ message: "Invalid email or password" });
   }
 
   // Generate JWT token
