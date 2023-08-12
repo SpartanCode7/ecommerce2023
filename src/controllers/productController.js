@@ -31,7 +31,17 @@ const createProduct = async (req, res) => {
   const missingFields = requiredFields.filter((field) => !req.body[field]);
 
   if (missingFields.length > 0) {
-    return res.status(BAD_REQUEST).json({ message: `Please fill in the following required fields: ${missingFields.join(", ")}` });
+    const fieldErrorMessages = {
+      name: "Product name is required",
+      sku: "SKU is required",
+      description: "Product description is required",
+      price: "Product price is required",
+      image: "Product image URL is required",
+      stock: "Product stock quantity is required",
+    };
+
+    const missingFieldMessages = missingFields.map((field) => fieldErrorMessages[field]);
+    return res.status(BAD_REQUEST).json({ message: `Please fill in the following required fields: ${missingFieldMessages.join(", ")}` });
   }
 
   try {
@@ -42,7 +52,6 @@ const createProduct = async (req, res) => {
     res.status(INTERNAL_SERVER_ERROR).json({ message: "Error creating product" });
   }
 };
-
 
 // Update an existing product
 const updateProduct = async (req, res) => {
