@@ -5,6 +5,7 @@ const adminRoutes = require("../src/routes/adminRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const productRoutes = require("./routes/productRoutes");
 const mongoose = require("./config/db_connection");
+const userRoutes = require("./routes/userRoute")
 
 const app = express();
 
@@ -12,8 +13,9 @@ const app = express();
 app.use(bodyParser.json());
 
 // Routes
-app.use("/admin", adminRoutes);
-app.use("/api/v1/category", categoryRoutes);
-app.use("/api/v1/product", productRoutes);
+app.use("/admin", adminRoutes)
+app.use("/user", userRoutes)
+app.use("/api/v1/category", categoryRoutes)
+app.use("/api/v1/product", productRoutes)
 
 module.exports = app;

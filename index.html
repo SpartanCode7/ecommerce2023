@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="demo"></div>
+
+    <script>
+
+        const ab = async () => {
+
+            let a = 8 + 9
+
+            let result = await a
+
+            document.getElementById("demo").innerHTML = result
+
+        }
+        ab()
+
+        a = 10
+            a += 10
+            console.log(ab)
+
+        try {
+            a = 10
+            a += 10
+            console.log(ab)
+        } catch (error) {
+            console.log("Here's error")
+        }
+
+    </script>
+</body>
+</html>
